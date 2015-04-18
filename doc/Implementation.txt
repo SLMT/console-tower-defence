@@ -1,0 +1,236 @@
+==================================== 檔案作用說明 ====================================
+
+ game_part.c   這個檔案中包含遊戲的主題，怪物、Tower以及遊戲中游標控制等等
+	      都寫在這個檔案中
+
+ TD.c          這個是程式的進入點，主要包含的是主選單與離開選單的部分
+
+ image.c       這裡存了一些與圖案有關的函式
+
+ other.c       這裡寫了不屬於遊戲部分的函式，例如：遊戲介紹、作者介紹、排行榜等等
+
+
+ 
+==================================== 程式架構說明 ====================================
+
+《主選單部分》
+
+ 啟動 TD.exe   →   製作並顯示外框與基礎資訊(EX: Made by SLMT)    →   啟動鍵盤控制  →   while() 無窮迴圈 →  初始化主選單  
+
+                                                                                                                  ↓
+
+  移動囧人  ←   利用 drawCmdWindow() 把資訊顯示在視窗中    ←   顯示動畫與主選單   ←    鍵盤控制選擇   ←   產生囧人動畫
+
+     ↓
+
+ 回到迴圈開始處  →  《離開遊戲》   →   顯示離開畫面   →   等待使用者按下 Enter 鍵   →  結束程式
+     
+     ↓
+
+《單人遊戲》
+     
+     ↓
+
+ 初始化各項數值(HP、money...等)   →   建立指向第一隻怪物與第一座塔的指標   →   製作游標元件與離開選單   →    清空畫面
+
+                                                                                                                   ↓
+
+ 顯示選單，並把鍵盤選擇改為選單模式    ←   是   ←   檢查離開選單是否開啟   ←    等待 0.1 秒輸入   ←   while() 無窮迴圈
+
+               ↓                                            ↓
+
+       遊戲結束或回到主選單                                  否
+
+                                                             ↓
+
+                                                        鍵盤控制選擇  →   用上下左右控制游標移動(利用游標的 x,y 座標改變)
+  
+                                                             ↓                                           ↓
+
+                                                       利用 Enter 來進行確定與產生新的 Tower  →   設定怪物移動時間
+  
+                                                                                                          ↓
+
+      計算遊戲時間    ←    讓怪物「們」往前移動一步    ←    計算怪物數目與產生怪物    ←    每過一段時間，怪物前進一步
+     
+           ↓
+
+   檢查是否有怪物已走到終點   →   讓塔對怪物發動攻擊一次   →   將所有資訊顯示出來(塔、怪物、終點、HP...)   →   利用 drawCmdWindow() 把資訊顯示在視窗中
+  
+                                                                                                                                 ↓
+
+                   請求輸入名字     ←    有     ←    比對遊戲成績是否由進入前八名    ←    遊戲結束    ←    是    ←    檢查 HP 是否歸零
+  
+                        ↓                                         ↓                                                           ↓
+
+                把成績存入 Ranklist.txt                            否                                                           否
+  
+                        ↓                                         ↓                                                           ↓
+
+                    回到《主選單》                             回到《主選單》                                             回到 while 開頭
+
+
+==================================== 資料結構說明 ====================================
+
+《 Moster 》
+
+產生怪物：
+
+首先，先建立一個名為 First_m 的指標，指向 NULL
+
+利用 genMoster 函式取得記憶體中 Moster 大小的空間，然後初始化各項怪物的資料
+
+接著讓 First_m 指向第一隻怪物的記憶體位置，然後設定第一隻怪物中的 nextPtr 指向 NULL
+
+之後產生怪物皆以此類推
+
+
+移動與顯示怪物：
+
+顯示與移動怪物時，皆從 First_m 取得每一隻怪物的位置
+
+並在取得的同時，顯示與移動怪物，直到最後一隻怪物的 nextPtr 為止
+
+
+刪除怪物：
+
+同樣先由 First_m 取得第一隻怪物的位置，並依照輸入的引數決定要刪除第幾隻怪物
+
+用一個變數來計算取得怪物是第幾隻，等到取得目標後
+
+先將上一個怪物的 nextPtr 指向目標怪物的下一隻怪物，然後釋放目標怪物的記憶體位置
+
+
+
+《 Tower 》
+
+產生 Tower：
+
+首先，先建立一個名為 First_t 的指標，指向 NULL
+
+利用 createTower 函式取得記憶體中 Tower 大小的空間，然後初始化各項 Tower 的資料
+
+接著讓 First_t 指向第一座塔的記憶體位置，然後設定第一座塔中的 nextPtr 指向 NULL
+
+之後建造的塔皆以此類推
+
+
+顯示 Tower ：
+
+顯示 Tower 時，皆從 First_t 取得每一座 Tower 的位置
+
+並在取得每座塔的同時，顯示出來，直到最後一座 Tower 的 nextPtr 為止
+
+
+Tower 升級與檢查：
+
+這兩者皆是利用游標所在的 x,y 座標來判斷
+
+一開始先從 First_t 取得第一座 Tower 的位置，並開始一一比對每座塔的 x,y 座標
+
+直到找到目標之後，才進行升級與建造檢查
+
+
+刪除怪物：
+
+同樣先由 First_t 取得第一座 Tower 的位置，並且依照輸入的 x,y 座標尋找目標 Tower
+
+等到取得目標後，先將上一座 Tower 的 nextPtr 指向目標 Tower 的下一座 Tower，然後釋放目標 Tower 的記憶體位置
+
+
+==================================== Fuction 作用說明 ====================================
+
+《 TD.c 》
+
+int main(void)   遊戲進入點，主選單顯示
+
+extern void putString(int x, int y, char *p, int fg_color, int bg_color)      貼上字串
+
+extern void delay(float sec)    讓程式暫停幾秒
+
+extern void clearScreen(void)   清除畫面(不包含外框)
+
+void setMainMenu(Menu *m)       設定主選單
+
+void showMainMenu(Menu *m)      顯示主選單
+
+void Ending(void)               結束畫面顯示
+
+void genJune(June *j)           產生囧人動畫物件
+
+void showJune(June *j)          顯示囧人動畫
+
+void moveJune(June *j)          移動囧人
+
+《 game_part.c 》
+
+extern int sin_game(void);    單人遊戲主體 (遊戲會回傳一個值，告訴 int main 玩家是否要立刻離開遊戲)
+
+void setMap(void)             初始化遊戲地圖
+
+void showMap(int x,int y)     顯示遊戲地圖
+
+void setExitMenu(Menu *m)     初始化離開選單
+
+void showExitMenu(Menu *m)    顯示離開選單
+
+
+
+Moster* genMoster(Moster *Fm,int mos_num,int op_x,int op_y,int level)    產生怪物
+
+void showMoster(Moster *m,int map_x,int map_y)                           顯示怪物
+
+void moveMoster(Moster *m)                                               移動怪物
+
+Moster* deleteMoster(Moster *Fm,int num)                                 刪除怪物
+
+
+
+void Attack(Moster *m,Tower *t)                               檢查 Tower 是否可以對怪物發動攻擊
+
+Moster* ColorAndDead(Moster *m)                             依照怪物血量修改怪物顏色以及決定怪物是否死亡
+
+int CheckMSAllDead(Moster *m)                                檢查是否所有怪物皆死亡
+
+
+
+Tower* createTower(Tower *FT,int kind,int op_x,int op_y)                產生 Tower
+
+void showTower(Tower *FT,int map_x,int map_y)                           顯示 Tower
+
+int TowerCheck(int cu_x,int cu_y,Tower *FT)                     檢查 Tower 是否建造在不該建造的位置
+
+int setTowerMenu(Tower *FT,Menu *m,int x,int y)                 初始化 Tower 資訊選單
+
+void showTowerMenu(Menu *m)                                     顯示 Tower 資訊選單
+
+int UpGrade(Tower *FT,int x,int y)                                    Tower 升級
+
+Tower* deleteTower(Tower *FT,int x,int y)                                刪除 Tower 
+
+
+
+void EndPoint(int map_x,int map_y,int state)                           顯示終點建築物
+
+
+
+
+《 image.c 》
+
+extern void getImage(void)                                      從檔案讀入主選單右下角的圖檔
+
+extern void showImage(int num)                                   將圖案顯示在主選單右下角
+
+extern void moster_shape(int num,int state,int *shape)                取得怪物形狀
+
+extern void tower_shape(int num,int *shpae)                         取得 Tower 的形狀
+
+《 other.c 》
+
+extern void writer(void)                                              顯示作者介紹
+
+extern void intro(void)                                               顯示遊戲介紹
+
+extern void rankList(void)                                             顯示排行榜
+
+extern void saveScore(int FinScore)                                  讀取並儲存分數
