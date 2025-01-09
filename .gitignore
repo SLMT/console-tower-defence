@@ -1,3 +1,7 @@
 
 # Object files
 *.o
+
+# Bazel outputs
+/bazel-*
+/MODULE.bazel.lock
