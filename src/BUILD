@@ -1,3 +1,7 @@
+package(
+    default_visibility = ["//visibility:public"],
+)
+
 cc_library(
     name = "libtd",
     srcs = [
@@ -13,11 +17,4 @@ cc_library(
         "console_draw2.h",
         "kb_input2.h",
     ],
-)
-
-cc_binary(
-    name = "td",
-    # Find a way to make the program load the data automatically
-    # data = glob(["data/**"]),
-    deps = [":libtd"],
 )

@@ -1,3 +1,18 @@
-# Tower Defence
+# Console Tower Defense Game
 
-這是我大一修程式設計時寫的期末專題，一個用 C 操作 Windows API 寫的塔防遊戲。因為實在太令人懷念，決定上傳到 Github 上保留起來。未來有空可以來好好修改一下這個程式。
+## Prerequisite
+
+- For compiling the code: Any C/C++ Compiler + [Bazel](https://bazel.build/)
+- For running the binary: Windows OS
+
+## Build
+
+Prerequisite: 
+
+Navigate to the root directory of the project and enter the following command:
+
+```
+$ bazel build td
+```
+
+The resulted binary will be at `bazel-bin/td.exe`.
