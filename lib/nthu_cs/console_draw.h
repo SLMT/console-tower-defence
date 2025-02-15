@@ -1,3 +1,5 @@
+// Credit: Prof. Hwann-Tzong Chen <htchen@cs.nthu.edu.tw>
+
 #ifndef LIB_NTHU_CS_CONSOLE_DRAW_H_
 #define LIB_NTHU_CS_CONSOLE_DRAW_H_
 

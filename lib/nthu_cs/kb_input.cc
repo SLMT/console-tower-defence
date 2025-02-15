@@ -1,3 +1,5 @@
+// Credit: Prof. Hwann-Tzong Chen <htchen@cs.nthu.edu.tw>
+
 #include "lib/nthu_cs/kb_input.h"
 
 #include <windows.h>
