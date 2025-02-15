@@ -3,5 +3,7 @@ cc_library(
     srcs = [
         "console_draw.cc",
         "console_draw.h",
+        "kb_input.cc",
+        "kb_input.h",
     ],
 )
