@@ -27,6 +27,11 @@ Frame::Frame(int offset_x, int offset_y, int width, int height)
 
 void Frame::DrawString(int x, int y, const std::string& str, int fg_color,
                        int bg_color) {
+  CHECK_GE(x, -2);
+  CHECK_LT(x, inner_width_ + 2);
+  CHECK_GE(y, -1);
+  CHECK_LT(y, inner_height_ + 1);
+
   for (int i = 0; i < str.size(); i++) {
     DrawASCII(x + i, y, str[i], fg_color, bg_color);
   }
@@ -35,6 +40,8 @@ void Frame::DrawString(int x, int y, const std::string& str, int fg_color,
 void Frame::DrawASCII(int x, int y, int ch, int fg_color, int bg_color) {
   CHECK_GE(x, -2);
   CHECK_LT(x, inner_width_ + 2);
+  CHECK_GE(y, -1);
+  CHECK_LT(y, inner_height_ + 1);
 
   data_[x + 2][y + 1].ch = ch;
   data_[x + 2][y + 1].fg_color = fg_color;
