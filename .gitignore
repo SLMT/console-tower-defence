@@ -5,3 +5,6 @@
 # Bazel outputs
 /bazel-*
 /MODULE.bazel.lock
+
+# VS Code
+.vscode

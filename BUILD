@@ -1,6 +1,21 @@
+load("@rules_pkg//:pkg.bzl", "pkg_zip")
+
 cc_binary(
     name = "td",
-    # Find a way to make the program load the data automatically
-    # data = glob(["data/**"]),
+    data = [":data"],
     deps = ["//src:libtd"],
+)
+
+filegroup(
+    name = "data",
+    srcs = glob(["data/**"]),
+)
+
+pkg_zip(
+    name = "td_pkg",
+    srcs = [
+        ":data",
+        ":td",
+    ],
+    out = "td.zip",
 )

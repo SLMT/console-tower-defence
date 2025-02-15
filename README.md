@@ -12,7 +12,7 @@ Prerequisite:
 Navigate to the root directory of the project and enter the following command:
 
 ```
-$ bazel build td
+$ bazel build td_pkg
 ```
 
-The resulted binary will be at `bazel-bin/td.exe`.
+This will build the source code and package the binary along with all necessary data files into a zip file at `bazel-bin/td.zip`.
