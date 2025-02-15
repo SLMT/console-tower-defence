@@ -49,6 +49,7 @@ void Frame::Flush() {
       if (data_[i][j].is_fresh) {
         nthu_cs::PutASCII(offset_x_ + i, offset_y_ + j, data_[i][j].ch,
                           data_[i][j].fg_color, data_[i][j].bg_color);
+        data_[i][j].is_fresh = false;
       }
     }
   }
