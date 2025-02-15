@@ -16,7 +16,7 @@ int32_t touched = 0;
 
 }  // namespace
 
-void putASCII2(int x, int y, int ch, int fgcolor, int bgcolor)
+void PutASCII(int x, int y, int ch, int fgcolor, int bgcolor)
 {
   if (touched == 0) {
     hOutput = (HANDLE)GetStdHandle(STD_OUTPUT_HANDLE);
@@ -30,7 +30,7 @@ void putASCII2(int x, int y, int ch, int fgcolor, int bgcolor)
   }
 }
 
-void drawCmdWindow()
+void DrawCmdWindow()
 {
   WriteConsoleOutput(hOutput, (CHAR_INFO*)screen_buffer, dwBufferSize,
     dwBufferCoord, &rcRegion);
