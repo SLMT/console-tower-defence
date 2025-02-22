@@ -19,14 +19,15 @@ Frame::Frame(int offset_x, int offset_y, int width, int height)
       outer_height_(height + 2),
       data_(std::vector<std::vector<FrameChar>>(
           outer_width_,
-          std::vector<FrameChar>(outer_height_, {0, 0, 0, false}))) {
+          std::vector<FrameChar>(outer_height_,
+                                 {0, Color::kBlack, Color::kBlack, false}))) {
   DrawBorder();
   DrawInformation();
   Flush();
 }
 
-void Frame::DrawString(int x, int y, const std::string& str, int fg_color,
-                       int bg_color) {
+void Frame::DrawString(int x, int y, const std::string& str, Color fg_color,
+                       Color bg_color) {
   CHECK_GE(x, -2);
   CHECK_LT(x, inner_width_ + 2);
   CHECK_GE(y, -1);
@@ -37,7 +38,7 @@ void Frame::DrawString(int x, int y, const std::string& str, int fg_color,
   }
 }
 
-void Frame::DrawASCII(int x, int y, int ch, int fg_color, int bg_color) {
+void Frame::DrawASCII(int x, int y, int ch, Color fg_color, Color bg_color) {
   CHECK_GE(x, -2);
   CHECK_LT(x, inner_width_ + 2);
   CHECK_GE(y, -1);
@@ -55,7 +56,8 @@ void Frame::Flush() {
     for (int j = 0; j < outer_height_; j++) {
       if (data_[i][j].is_fresh) {
         nthu_cs::PutASCII(offset_x_ + i, offset_y_ + j, data_[i][j].ch,
-                          data_[i][j].fg_color, data_[i][j].bg_color);
+                          static_cast<int>(data_[i][j].fg_color),
+                          static_cast<int>(data_[i][j].bg_color));
         data_[i][j].is_fresh = false;
       }
     }
@@ -67,26 +69,26 @@ void Frame::Flush() {
 void Frame::DrawBorder() {
   // Put horizontal borders
   for (int x = -2; x <= inner_width_; x += 2) {
-    DrawASCII(x, -1, 0xA1, COLOR_GRAY, COLOR_BLACK);
-    DrawASCII(x + 1, -1, 0xBD, COLOR_GRAY, COLOR_BLACK);
-    DrawASCII(x, inner_height_, 0xA1, COLOR_GRAY, COLOR_BLACK);
-    DrawASCII(x + 1, inner_height_, 0xBD, COLOR_GRAY, COLOR_BLACK);
+    DrawASCII(x, -1, 0xA1, Color::kGray, Color::kBlack);
+    DrawASCII(x + 1, -1, 0xBD, Color::kGray, Color::kBlack);
+    DrawASCII(x, inner_height_, 0xA1, Color::kGray, Color::kBlack);
+    DrawASCII(x + 1, inner_height_, 0xBD, Color::kGray, Color::kBlack);
   }
 
   // Put vertical borders
   for (int y = -1; y <= inner_height_; y++) {
-    DrawASCII(-2, y, 0xA1, COLOR_GRAY, COLOR_BLACK);
-    DrawASCII(-1, y, 0xBD, COLOR_GRAY, COLOR_BLACK);
-    DrawASCII(inner_width_, y, 0xA1, COLOR_GRAY, COLOR_BLACK);
-    DrawASCII(inner_width_ + 1, y, 0xBD, COLOR_GRAY, COLOR_BLACK);
+    DrawASCII(-2, y, 0xA1, Color::kGray, Color::kBlack);
+    DrawASCII(-1, y, 0xBD, Color::kGray, Color::kBlack);
+    DrawASCII(inner_width_, y, 0xA1, Color::kGray, Color::kBlack);
+    DrawASCII(inner_width_ + 1, y, 0xBD, Color::kGray, Color::kBlack);
   }
 }
 
 void Frame::DrawInformation() {
-  DrawString(0, -1, " Tower Defense 2.0  ", COLOR_BRIGHT_YELLOW,
-             COLOR_DARK_BLUE);
-  DrawString(inner_width_ - 14, -1, " Made by SLMT ", COLOR_BRIGHT_YELLOW,
-             COLOR_DARK_CYAN);
+  DrawString(0, -1, " Tower Defense 2.0  ", Color::kBrightYellow,
+             Color::kDarkBlue);
+  DrawString(inner_width_ - 14, -1, " Made by SLMT ", Color::kBrightYellow,
+             Color::kDarkCyan);
 }
 
 }  // namespace slmt_ctd
