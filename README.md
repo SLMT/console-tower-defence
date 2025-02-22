@@ -1,5 +1,7 @@
 # Console Tower Defense Game
 
+![Screenshot](./screen_shot.png)
+
 ## Prerequisite
 
 - For compiling the code: Any C/C++ Compiler + [Bazel](https://bazel.build/)
