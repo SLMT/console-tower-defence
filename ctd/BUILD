@@ -7,12 +7,16 @@ cc_library(
     srcs = [
         "ctd.cc",
         "ctd.h",
-        "frame.cc",
         "frame.h",
+        "game_frame.cc",
+        "game_frame.h",
+        "raw_frame.cc",
+        "raw_frame.h",
     ],
     deps = [
         "//lib/nthu_cs",
         "@abseil-cpp//absl/log:check",
+        "@abseil-cpp//absl/strings",
     ],
 )
 

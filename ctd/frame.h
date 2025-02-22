@@ -27,47 +27,21 @@ enum class Color {
   kWhite = 15,
 };
 
-// Represents a frame shown on the terminal.
+// An interface that presents a frame shown on the terminal.
 class Frame {
  public:
-  // Create a frame at (`offset_x`, `offset_y`) with size `width` X `height`.
-  Frame(int offset_x, int offset_y, int width, int height);
-
   // Draw a string `str` at (`x`, `y`) with foreground color `fg_color` and
   // background color `bg_color`.
-  void DrawString(int x, int y, const std::string& str, Color fg_color,
-                  Color bg_color);
+  virtual void DrawString(int x, int y, const std::string& str, Color fg_color,
+                          Color bg_color) = 0;
 
   // Draw a character at (`x`, `y`) with foreground color `fg_color` and
   // background color `bg_color`.
-  void DrawASCII(int x, int y, int ch, Color fg_color, Color bg_color);
+  virtual void DrawASCII(int x, int y, int ch, Color fg_color,
+                         Color bg_color) = 0;
 
   // Flush the frame buffer to the window.
-  void Flush();
-
- private:
-  struct FrameChar {
-    int ch;
-    Color fg_color;
-    Color bg_color;
-    bool is_fresh;
-  };
-
-  void DrawBorder();
-  void DrawInformation();
-
-  // Coordinates
-  int offset_x_;
-  int offset_y_;
-
-  // Frame size
-  int inner_width_;
-  int inner_height_;
-  int outer_width_;
-  int outer_height_;
-
-  // Frame data
-  std::vector<std::vector<FrameChar>> data_;
+  virtual void Flush() = 0;
 };
 
 }  // namespace slmt_ctd

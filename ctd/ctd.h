@@ -1,7 +1,7 @@
 #ifndef CTD_CTD_H_
 #define CTD_CTD_H_
 
-#include "ctd/frame.h"
+#include "ctd/game_frame.h"
 
 namespace slmt_ctd {
 
@@ -11,7 +11,7 @@ class Ctd {
   Ctd();
 
  private:
-  Frame frame_;
+  GameFrame frame_;
 };
 
 }  // namespace slmt_ctd
